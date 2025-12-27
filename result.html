@@ -3,16 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>レース結果 表示</title>
+  <title>レース結果 SPA</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100">
   <div class="max-w-6xl mx-auto p-4">
     <h1 class="text-2xl font-bold mb-2">レース結果 SPA</h1>
 
-    <!-- 開催切り替え -->
-    <div class="mb-4">
-      <label class="text-sm text-gray-600 mr-2">開催：</label>
+    <!-- 日付選択 -->
+    <div class="mb-4 flex items-center gap-2">
+      <label class="text-sm text-gray-600">日付：</label>
+      <input id="dateInput" type="date" class="border rounded px-2 py-1" />
+
+      <label class="text-sm text-gray-600 ml-4">開催：</label>
       <select id="daySelect" class="border rounded px-2 py-1"></select>
     </div>
 
@@ -39,12 +42,20 @@
     const raceTabs = document.getElementById('raceTabs');
     const raceDetail = document.getElementById('raceDetail');
     const daySelect = document.getElementById('daySelect');
+    const dateInput = document.getElementById('dateInput');
 
     // ================================
     // 外部JSON読み込み
     // ================================
-    async function loadData() {
-      const res = await fetch('./race_result_20251227.json');
+    async function loadData(dateStr) {
+      const filename = `race_result_${dateStr.replace(/-/g, '')}.json`;
+
+      const res = await fetch(`./data/${filename}`);
+      if (!res.ok) {
+        alert(`データファイルが見つかりません: ${filename}`);
+        return;
+      }
+
       data.days = await res.json();
 
       renderDaySelect();
@@ -146,7 +157,15 @@
       `;
     }
 
-    loadData();
+    // 初期日付：今日
+    const today = new Date().toISOString().slice(0, 10);
+    dateInput.value = today;
+
+    loadData(today);
+
+    dateInput.addEventListener('change', e => {
+      loadData(e.target.value);
+    });
   </script>
 </body>
 </html>
