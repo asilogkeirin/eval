@@ -283,21 +283,29 @@
 
       raceDetail.innerHTML = `
         <div class="mb-4">
-          <h2 class="text-xl font-semibold">
-            ${day.place} / ${day.grade} / ${day.race_day}日目（全レース）
-          </h2>
+          <!-- 見出し + 次の日リンク -->
+          <div class="flex items-center justify-between mb-2">
+            <h2 class="text-xl font-semibold">
+              ${day.place} / ${day.grade} / ${day.race_day}日目（全レース）
+            </h2>
 
-          ${hasFinalRace ? '' : `
-            <a href="${nextUrl}"
-               class="px-3 py-1 rounded-lg border bg-blue-600 text-white text-sm hover:bg-blue-700">
-              ▶ 次の日のレース
-            </a>
-          `}
+            ${hasFinalRace ? '' : `
+              <a href="${nextUrl}"
+                class="px-3 py-1 rounded text-sm font-medium
+                        border border-gray-400 text-gray-700
+                        hover:bg-gray-100 whitespace-nowrap">
+                次の日のレース
+              </a>
+            `}
+          </div>
 
+          <!-- 表コピー -->
           <div class="flex justify-end">
             <button
               id="copyAllBtn"
-              class="px-3 py-1 rounded-lg border bg-white hover:bg-gray-100 text-sm">
+              class="px-3 py-1 rounded-lg border
+                    bg-white hover:bg-gray-100
+                    text-sm text-gray-700">
               表をコピー
             </button>
           </div>
